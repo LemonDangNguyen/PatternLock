@@ -21,29 +21,33 @@ class PatternLockView(context: Context, attrs: AttributeSet?) : View(context, at
     private var currentY = 0f
 
     private val dotPaint = Paint().apply {
-        color = Color.BLUE
+        color = Color.DKGRAY
         style = Paint.Style.FILL
         isAntiAlias = true
     }
 
     private val selectedDotPaint = Paint().apply {
-        color = Color.RED
+        color = Color.GRAY
         style = Paint.Style.FILL
         isAntiAlias = true
     }
 
     private val linePaint = Paint().apply {
-        color = Color.BLACK
-        strokeWidth = 5f
+        color = Color.GRAY
+        alpha = 128
+        strokeWidth = 30f
         style = Paint.Style.STROKE
+        strokeCap = Paint.Cap.ROUND
+        strokeJoin = Paint.Join.ROUND
         isAntiAlias = true
     }
+
 
     private val _patternComplete = MutableLiveData<List<Int>>()
     val patternComplete: LiveData<List<Int>> get() = _patternComplete
 
-    private var dotRadius = 50f
-    private var spacing = 100f
+    private var dotRadius = 25f
+    private var spacing = 120f
     private var startX = 0f
     private var startY = 0f
 
