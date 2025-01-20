@@ -6,11 +6,11 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.patternlock.model.Dot
 
 class PatternLockView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
 
@@ -110,9 +110,11 @@ class PatternLockView(context: Context, attrs: AttributeSet?) : View(context, at
                 selectedDots.clear()
                 handleTouch(currentX, currentY)
             }
+
             MotionEvent.ACTION_MOVE -> {
                 handleTouch(currentX, currentY)
             }
+
             MotionEvent.ACTION_UP -> {
                 _patternComplete.value = selectedDots.map { it.id }
             }
@@ -131,8 +133,4 @@ class PatternLockView(context: Context, attrs: AttributeSet?) : View(context, at
     }
 }
 
-data class Dot(val x: Float, val y: Float, val radius: Float, val id: Int) {
-    fun contains(px: Float, py: Float): Boolean {
-        return (px - x) * (px - x) + (py - y) * (py - y) <= radius * radius
-    }
-}
+
