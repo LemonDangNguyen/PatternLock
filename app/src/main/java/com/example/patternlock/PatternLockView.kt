@@ -42,7 +42,6 @@ class PatternLockView(context: Context, attrs: AttributeSet?) : View(context, at
         isAntiAlias = true
     }
 
-
     private val _patternComplete = MutableLiveData<List<Int>>()
     val patternComplete: LiveData<List<Int>> get() = _patternComplete
 
@@ -63,7 +62,6 @@ class PatternLockView(context: Context, attrs: AttributeSet?) : View(context, at
 
         val availableWidth = width.toFloat() - paddingLeft - paddingRight
         val availableHeight = height.toFloat() - paddingTop - paddingBottom
-
 
         spacing = Math.min(availableWidth, availableHeight) / 5f
 
@@ -87,7 +85,7 @@ class PatternLockView(context: Context, attrs: AttributeSet?) : View(context, at
 
         dots.forEach { dot ->
             val paint = if (selectedDots.contains(dot)) selectedDotPaint else dotPaint
-            canvas.drawCircle(dot.x, dot.y, dot.radius, paint)
+            canvas.drawCircle(dot.x, dot.y, dot.animatedRadius, paint)
         }
 
         if (selectedDots.isNotEmpty()) {
@@ -99,6 +97,7 @@ class PatternLockView(context: Context, attrs: AttributeSet?) : View(context, at
             }
             canvas.drawPath(path, linePaint)
         }
+
         if (selectedDots.isNotEmpty()) {
             val lastDot = selectedDots.last()
             canvas.drawLine(lastDot.x, lastDot.y, currentX, currentY, linePaint)
@@ -121,6 +120,7 @@ class PatternLockView(context: Context, attrs: AttributeSet?) : View(context, at
 
             MotionEvent.ACTION_UP -> {
                 _patternComplete.value = selectedDots.map { it.id }
+                selectedDots.forEach { it.startAnimation() }
             }
         }
 
@@ -132,9 +132,8 @@ class PatternLockView(context: Context, attrs: AttributeSet?) : View(context, at
         dots.forEach { dot ->
             if (!selectedDots.contains(dot) && dot.contains(x, y)) {
                 selectedDots.add(dot)
+                dot.startAnimation()
             }
         }
     }
 }
-
-
