@@ -146,4 +146,4 @@ Tóm lại:
 •	Dot là data class đại diện cho mỗi chấm trong grid.
 •	PatternLockViewModel quản lý dữ liệu mẫu hình và xác thực mở khóa.
 •	PatternRepository quản lý lưu trữ và truy xuất mẫu hình từ SharedPreferences.
-
+end
