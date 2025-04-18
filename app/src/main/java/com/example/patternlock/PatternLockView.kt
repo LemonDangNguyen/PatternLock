@@ -127,13 +127,51 @@ class PatternLockView(context: Context, attrs: AttributeSet?) : View(context, at
         invalidate()
         return true
     }
+// bỏ qua nếu ko chạm
+//    private fun handleTouch(x: Float, y: Float) {
+//        dots.forEach { dot ->
+//            if (!selectedDots.contains(dot) && dot.contains(x, y)) {
+//                selectedDots.add(dot)
+//                dot.startAnimation()
+//            }
+//        }
+//    }
 
+
+    // đi qua là dính
     private fun handleTouch(x: Float, y: Float) {
-        dots.forEach { dot ->
-            if (!selectedDots.contains(dot) && dot.contains(x, y)) {
-                selectedDots.add(dot)
-                dot.startAnimation()
+        val targetDot = dots.firstOrNull { !selectedDots.contains(it) && it.contains(x, y) }
+        if (targetDot != null) {
+            // Nếu có Dot mới được chạm
+            val lastDot = selectedDots.lastOrNull()
+            if (lastDot != null) {
+                val midDot = findIntermediateDot(lastDot, targetDot)
+                if (midDot != null && !selectedDots.contains(midDot)) {
+                    selectedDots.add(midDot)
+                    midDot.startAnimation()
+                }
             }
+
+            selectedDots.add(targetDot)
+            targetDot.startAnimation()
         }
+    }
+    private fun findIntermediateDot(dot1: Dot, dot2: Dot): Dot? {
+        // Nếu cả hai cùng hàng hoặc cùng cột hoặc đường chéo
+        val row1 = dot1.id / 3
+        val col1 = dot1.id % 3
+        val row2 = dot2.id / 3
+        val col2 = dot2.id % 3
+
+        val midRow = (row1 + row2) / 2
+        val midCol = (col1 + col2) / 2
+
+        // Nếu đi qua chính giữa một Dot
+        if ((row1 + row2) % 2 == 0 && (col1 + col2) % 2 == 0) {
+            val midId = midRow * 3 + midCol
+            return dots.firstOrNull { it.id == midId }
+        }
+
+        return null
     }
 }

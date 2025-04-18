@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun observeSavedPattern() {
         viewModel.savedPattern.observe(this) { pattern ->
-            if (pattern != null && pattern.isNotEmpty()) {
+            if (!pattern.isNullOrEmpty()) {
                 binding.btnCreatePattern.visibility = View.INVISIBLE
                 binding.btnUnlock.visibility = View.VISIBLE
             } else {
